@@ -1,6 +1,6 @@
 import React from "react";
 
-function OrderReportSection() {
+function OrderReportSection({ orders, onDelete, onDeliver, filterStatus, setFilterStatus }) {
   return (
     <div className="px-2 sm:px-4 md:px-6 lg:px-8 py-4">
       {/* Header */}
@@ -10,29 +10,19 @@ function OrderReportSection() {
         </h2>
 
         <div className="flex items-center gap-2 sm:gap-3">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="text-white"
+          <select
+            className="bg-zinc-900 text-white text-sm px-2 py-1 rounded-sm outline-none"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
           >
-            <path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z" />
-          </svg>
-          <select className="bg-zinc-900 text-white text-sm px-2 py-1 rounded-sm outline-none">
-            <option>All</option>
-            <option>Pending</option>
-            <option>Delivered</option>
+            <option value="All">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Delivered">Delivered</option>
           </select>
         </div>
       </div>
 
-      {/* Table container with scroll */}
+      {/* Table */}
       <div className="bg-cardbg rounded-md p-3 overflow-x-auto">
         <table className="min-w-[600px] sm:min-w-full border-separate border-spacing-y-2 text-white text-sm">
           <thead className="text-left">
@@ -46,23 +36,49 @@ function OrderReportSection() {
             </tr>
           </thead>
           <tbody>
-            <tr className="border-t border-gray-700">
-              <td className="py-2 sm:py-3 whitespace-nowrap">21</td>
-              <td className="py-2 sm:py-3 whitespace-nowrap">Sumit Saha</td>
-              <td className="py-2 sm:py-3 whitespace-nowrap">Burger</td>
-              <td className="py-2 sm:py-3 whitespace-nowrap">300</td>
-              <td className="py-2 sm:py-3 whitespace-nowrap">
-                <span className="text-green-500 font-medium">Delivered</span>
-              </td>
-              <td className="py-2 sm:py-3 whitespace-nowrap flex flex-wrap gap-1">
-                <button className="bg-gray-800 hover:bg-red-600 text-xs px-2 py-1 rounded-full transition-colors duration-300">
-                  Delete
-                </button>
-                <button className="bg-gray-800 hover:bg-green-600 text-xs px-2 py-1 rounded-full transition-colors duration-300">
-                  DELIVER
-                </button>
-              </td>
-            </tr>
+            {orders.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="text-center py-4 text-gray-400">
+                  No orders found.
+                </td>
+              </tr>
+            ) : (
+              orders.map((order) => (
+                <tr key={order.id} className="border-t border-gray-700">
+                  <td className="py-2 sm:py-3 whitespace-nowrap">{order.id}</td>
+                  <td className="py-2 sm:py-3 whitespace-nowrap">{order.customer}</td>
+                  <td className="py-2 sm:py-3 whitespace-nowrap">
+                    {order.items.map((item) => item.name).join(", ")}
+                  </td>
+                  <td className="py-2 sm:py-3 whitespace-nowrap">{order.total}</td>
+                  <td className="py-2 sm:py-3 whitespace-nowrap">
+                    <span
+                      className={`font-medium ${
+                        order.status === "Delivered" ? "text-green-500" : "text-yellow-400"
+                      }`}
+                    >
+                      {order.status}
+                    </span>
+                  </td>
+                  <td className="py-2 sm:py-3 whitespace-nowrap flex flex-wrap gap-1">
+                    <button
+                      onClick={() => onDelete(order.id)}
+                      className="bg-gray-800 hover:bg-red-600 text-xs px-2 py-1 rounded-full transition-colors duration-300"
+                    >
+                      Delete
+                    </button>
+                    {order.status === "Pending" && (
+                      <button
+                        onClick={() => onDeliver(order.id)}
+                        className="bg-gray-800 hover:bg-green-600 text-xs px-2 py-1 rounded-full transition-colors duration-300"
+                      >
+                        DELIVER
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
