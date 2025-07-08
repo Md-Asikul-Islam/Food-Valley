@@ -15,7 +15,7 @@ function DashBoard() {
 
       {/* Right Section: Order Summary & Report */}
       <div className="rounded flex flex-col gap-4 md:col-span-2">
-        {/* <OrderSummary /> */}
+        <OrderSummary />
         <OrderReportSection />
       </div>
     </div>
