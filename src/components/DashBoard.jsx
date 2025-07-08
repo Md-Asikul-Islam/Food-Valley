@@ -1,7 +1,7 @@
 import React from "react";
 import CreateOrder from "./CreateOrder";
 import OrderItems from "./OrderItems";
-import OrderSummery from "./OrderSummery";
+import OrderSummary from './OrderSummary'
 import OrderReportSection from "./OrderReportSection";
 
 function DashBoard() {
@@ -15,7 +15,7 @@ function DashBoard() {
 
       {/* Right Section: Order Summary & Report */}
       <div className="rounded flex flex-col gap-4 md:col-span-2">
-        <OrderSummery />
+        {/* <OrderSummary /> */}
         <OrderReportSection />
       </div>
     </div>
