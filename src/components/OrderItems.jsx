@@ -2,7 +2,7 @@ import React from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { foodItems } from "../data";
 
-function OrderItems({ selectedItems, onSelectItem }) {
+function OrderItems({ selectedItems, onSelectItem,totalPrice}) {
   return (
     <div className="mb-4">
       <label className="block text-sm font-medium mb-2 text-white">
@@ -12,6 +12,7 @@ function OrderItems({ selectedItems, onSelectItem }) {
       <div className="max-h-[300px] overflow-y-auto py-2 px-2 mb-3 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 hover:scrollbar-thumb-gray-500 transition-all duration-300 space-y-3">
         {foodItems.map((item) => {
           const isSelected = selectedItems.includes(item.id);
+
           return (
             <div
               key={item.id}
@@ -56,8 +57,11 @@ function OrderItems({ selectedItems, onSelectItem }) {
         })}
       </div>
 
-      <button className="w-full bg-[#FF602C] hover:bg-opacity-90 text-white font-medium py-3 rounded-full transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1">
-        Place Order (BDT 0)
+      <button
+        
+        className="w-full bg-[#FF602C] hover:bg-opacity-90 text-white font-medium py-3 rounded-full transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+      >
+        Place Order (BDT {totalPrice})
       </button>
     </div>
   );
